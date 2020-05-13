@@ -1,10 +1,19 @@
 import * as restify from 'restify'
+import * as mongoose from 'mongoose'
 import {environment} from '../common/environment'
 import {Router} from '../common/router'
 
 export class Server {
 
     application: restify.Server
+
+    initializeDb(): mongoose.MongooseThenable{
+        (<any>mongoose).Promise = global.Promise
+        mongoose.connection.on('connected', () => console.log('Database is connected'))
+        mongoose.connection.on('disconnected', () => console.log('Database is disconnected'))
+        mongoose.connection.on('error', () => console.log('Database is on Error'))
+        return mongoose.connect(environment.db.url, environment.db.options)
+    }
 
     initRoutes(routers: Router[]): Promise<any>{
         return new Promise((resolve, reject) => {
@@ -29,9 +38,11 @@ export class Server {
             }
         })
     }
-
-    bootstrap(routers: Router[] = []): Promise<Server> {
-        return this.initRoutes(routers)
-                    .then(() => this)
+    
+    bootstrap(routers: Router[] = []): Promise<Server>{
+        return this.initializeDb().then(() => {
+            return this.initRoutes(routers).then(() => this)
+        })
+               
     }
 }
