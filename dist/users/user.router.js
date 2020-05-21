@@ -38,8 +38,8 @@ class UsersRouter extends router_1.Router {
             const options = { overwrite: true };
             user_model_1.User.update({ _id: req.params.id }, req.body, options)
                 .exec().then(result => {
-                if (result.n) {
-                    return user_model_1.User.findById(req.params.id);
+                if (result) {
+                    user_model_1.User.findById(req.params.id);
                 }
                 else {
                     resp.send(404);
@@ -47,6 +47,20 @@ class UsersRouter extends router_1.Router {
             }).then(user => {
                 resp.json(user);
                 return next();
+            });
+        });
+        application.patch('/users/:id', (req, resp, next) => {
+            const options = { new: true };
+            user_model_1.User.findByIdAndUpdate(req.params.id, req.body, options)
+                .then(user => {
+                if (user) {
+                    resp.json(user);
+                    return next();
+                }
+                else {
+                    resp.send(404);
+                    return next();
+                }
             });
         });
     }

@@ -40,14 +40,28 @@ class UsersRouter extends Router {
             const options = {overwrite: true}
             User.update({_id: req.params.id}, req.body, options)
                     .exec().then(result => {
-                        if(result.n) {
-                            return User.findById(req.params.id)
+                        if(result) {
+                            User.findById(req.params.id)                             
                         } else {
                             resp.send(404)
                         }           
-                    }).then(user => {
+                    }).then(user => {                                               
                         resp.json(user)
                         return next()
+                    })
+        })
+
+        application.patch('/users/:id', (req, resp, next) => {
+            const options = {new: true}
+            User.findByIdAndUpdate(req.params.id, req.body, options)
+                    .then(user => {
+                        if(user) {
+                            resp.json(user)
+                            return next()
+                        } else {
+                            resp.send(404)
+                            return next()
+                        }
                     })
         })
     }
