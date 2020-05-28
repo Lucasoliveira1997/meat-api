@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const restify = require("restify");
 const mongoose = require("mongoose");
 const environment_1 = require("../common/environment");
+const error_handler_1 = require("./error.handler");
 class Server {
     initializeDb() {
         mongoose.Promise = global.Promise;
@@ -25,6 +26,8 @@ class Server {
                 for (let router of routers) {
                     router.applyRoutes(this.application);
                 }
+                //errors
+                this.application.on('restifyError', error_handler_1.handleError);
                 this.application.listen(environment_1.environment.server.port, () => {
                     resolve(this.application);
                 });

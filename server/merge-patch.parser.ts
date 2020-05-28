@@ -1,4 +1,6 @@
 import * as restify from 'restify'
+import {BadRequestError} from 'restify-errors'
+// import * as errors from 'restify-errors'
 
 const mpContentType = 'application/merge-patch+json'
 
@@ -8,7 +10,8 @@ export const mergePatchBodyParser = (req: restify.Request, resp: restify.Respons
         try {
             req.body = JSON.parse(req.body)
         } catch (error) {
-            return next(new Error(error))
+            return next(new BadRequestError(error))
+            // return next(new errors.BadRequestError(error))
         }
     }
 }

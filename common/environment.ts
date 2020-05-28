@@ -7,5 +7,8 @@ export const environment = {
         options: {
             useMongoClient: true
         }
+    },
+    security: {
+        saltRounds: process.env.SALT_ROUNDS || 10
     }
 }
