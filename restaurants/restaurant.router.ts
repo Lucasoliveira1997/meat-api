@@ -1,5 +1,5 @@
 import { ModelRouter } from '../common/model.router'
-import { Restaurant } from './restaurants.model'
+import { Restaurant } from './restaurant.model'
 import * as restify from 'restify'
 import {NotFoundError} from 'restify-errors'
 
