@@ -20,7 +20,7 @@ class ReviewsRouter extends ModelRouter<Review> {
         application.get('/reviews', this.findAll)
         application.get('/reviews/:id', [this.validateId, this.findById])
         application.del('/reviews', [this.validateId, this.delete])
-
+        
     }
 }
 
