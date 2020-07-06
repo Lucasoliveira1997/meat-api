@@ -37,7 +37,7 @@ class RestaurantsRouter extends ModelRouter<Restaurant> {
             }).then(rest => {
                 resp.json(rest.menu)
             }).catch(next)
-    }
+    }   
 
     applyRoutes(application: restify.Server) {
         application.get(`${this.basePath}`, this.findAll)
