@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleError = (req, resp, err, done) => {
     err.toJSON = () => {
         return {
+            name: err.name,
             message: err.message
         };
     };
@@ -19,6 +20,7 @@ exports.handleError = (req, resp, err, done) => {
                 messages.push({ message: err.errors[name].message });
             }
             err.toJSON = () => ({
+                message: 'Validation Error while processing your request',
                 errors: messages
             });
             break;
